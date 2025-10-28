@@ -1,5 +1,9 @@
 package hw5.proxy;
 
-public class SongService {
-    
+import java.util.List;
+
+public interface SongService {
+    Song searchById(Integer songID);
+    List<Song> searchByTitle(String title);
+    List<Song> searchByAlbum(String album);
 }
