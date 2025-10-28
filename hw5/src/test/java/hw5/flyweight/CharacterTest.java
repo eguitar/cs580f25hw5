@@ -3,18 +3,26 @@ package hw5.flyweight;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CharacterTest {
+class CharacterTest {
+
     @Test
-    public void testCharacterStoresValueAndStyle() {
-        CharacterStyle style = new CharacterStyle("Arial", "Red", 12);
+    void testCharacterStoresValueAndStyle() {
+        CharacterStyle style = new CharacterStyle("Arial", 12, "Red");
         Character ch = new Character('X', style);
-        assertEquals('X', ch.value);
-        assertEquals(style, ch.style);
+        assertEquals('X', ch.getValue());
+        assertEquals(style, ch.getStyle());
     }
 
     @Test
-    public void testCharacterToString() {
-        CharacterStyle style = new CharacterStyle("Calibri", "Blue", 14);
+    void testCharacterNullStyleThrows() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Character('A', null);
+        });
+    }
+
+    @Test
+    void testToStringMatchesExpected() {
+        CharacterStyle style = new CharacterStyle("Calibri", 14, "Blue");
         Character ch = new Character('A', style);
         assertEquals("A[Calibri, Blue, 14]", ch.toString());
     }

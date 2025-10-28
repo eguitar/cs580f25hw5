@@ -3,7 +3,8 @@ package hw5.flyweight;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CharacterStyleTest {
+class CharacterStyleTest {
+
     @Test
     void testStyleGetters() {
         CharacterStyle style = new CharacterStyle("Arial", 12, "Red");
@@ -19,4 +20,9 @@ public class CharacterStyleTest {
         assertEquals(s1, s2);
     }
 
+    @Test
+    void testToStringFormat() {
+        CharacterStyle style = new CharacterStyle("Arial", 12, "Red");
+        assertEquals("Arial, Red, 12", style.toString());
+    }
 }

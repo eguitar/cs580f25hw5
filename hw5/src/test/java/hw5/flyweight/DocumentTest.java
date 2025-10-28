@@ -1,29 +1,38 @@
 package hw5.flyweight;
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.File;
+import java.io.IOException;
 
-import hw5.flyweight.CharacterStyle;
+class DocumentTest {
 
-public class DocumentTest {
     @Test
-    void testSaveAndLoadPreservesCharactersAndStyles() {
+    void testAddAndGetCharacter() {
         Document doc = new Document();
-        CharacterStyle style1 = new CharacterStyle("Arial", 12, "Red");
-        doc.addCharacter('A', style1);
-        File tempFile = File.createTempFile("doc", ".txt");
-        doc.saveToFile(tempFile.getPath());
-        Document loaded = Document.loadFromFile(tempFile.getPath());
-        assertEquals('A', loaded.getCharacter(0).getSymbol());
-        assertEquals(style1, loaded.getCharacter(0).getStyle());
+        CharacterStyle style = new CharacterStyle("Arial", 12, "Red");
+        doc.addCharacter('A', style);
+        Character c = doc.getCharacter(0);
+        assertEquals('A', c.getValue());
+        assertEquals(style, c.getStyle());
+        assertEquals(1, doc.characterCount());
     }
 
     @Test
-    void testEmptyDocumentSaveLoad() {
+    void testSaveAndLoad() throws IOException {
+        CharacterStyleFactory factory = new CharacterStyleFactory();
         Document doc = new Document();
-        File tempFile = File.createTempFile("emptydoc", ".txt");
-        doc.saveToFile(tempFile.getPath());
-        Document loaded = Document.loadFromFile(tempFile.getPath());
-        assertEquals(0, loaded.characterCount());
-    }
+        CharacterStyle style = factory.getStyle("Arial", 12, "Red");
+        doc.addCharacter('A', style);
+        File temp = File.createTempFile("doc", ".txt");
+        temp.deleteOnExit();
 
+        doc.saveToFile(temp.getPath());
+        Document loaded = Document.loadFromFile(temp.getPath(), factory);
+
+        assertEquals(doc.characterCount(), loaded.characterCount());
+        assertEquals(doc.getCharacter(0).getValue(), loaded.getCharacter(0).getValue());
+        assertEquals(doc.getCharacter(0).getStyle(), loaded.getCharacter(0).getStyle());
+    }
 }

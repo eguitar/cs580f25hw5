@@ -3,7 +3,7 @@ package hw5.flyweight;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CharacterFactoryTest {
+class CharacterStyleFactoryTest {
 
     @Test
     void testSameStyleIsShared() {
@@ -19,5 +19,15 @@ public class CharacterFactoryTest {
         CharacterStyle style1 = factory.getStyle("Arial", 12, "Red");
         CharacterStyle style2 = factory.getStyle("Verdana", 16, "Black");
         assertNotSame(style1, style2);
-    
+    }
+
+    @Test
+    void testPoolSizeAfterMultipleRequests() {
+        CharacterStyleFactory factory = new CharacterStyleFactory();
+        factory.getStyle("Arial", 12, "Red");
+        factory.getStyle("Arial", 12, "Red");
+        factory.getStyle("Verdana", 16, "Black");
+        factory.getStyle("Calibri", 14, "Blue");
+        assertEquals(3, factory.getPoolSize());
+    }
 }
